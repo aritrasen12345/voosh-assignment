@@ -12,7 +12,7 @@ dotenv.config();
 
 // * Local imports
 import authRoutes from "./src/routes/auth.route.js";
-import globalErrorHandler from "./src/middlewares/globalErrorHandler.js";
+import globalErrorHandler from "./src/middlewares/globalErrorHandler.middleware.js";
 
 // * The express app
 const app = express();

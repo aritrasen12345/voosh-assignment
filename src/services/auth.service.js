@@ -47,6 +47,30 @@ class AuthService {
       }
     });
   }
+
+  async signOut(userId) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const loggedOutUser = await userModel.findByIdAndUpdate(
+          userId,
+          {
+            token: null,
+          },
+          { new: true }
+        );
+
+        if (!loggedOutUser) {
+          throw new Error(`Unable to logged out user!`, {
+            cause: { indicator: "auth", status: 401 },
+          });
+        }
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 }
 
 /**
