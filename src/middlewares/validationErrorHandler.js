@@ -22,6 +22,7 @@ const validationErrorHandler = (req, res, next) => {
     }
 
     // * If there is no error
+    next();
   } catch (err) {
     next(err);
   }
