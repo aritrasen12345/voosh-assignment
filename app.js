@@ -11,6 +11,7 @@ import axios from "axios";
 dotenv.config();
 
 // * Local imports
+import globalErrorHandler from "./src/middlewares/globalErrorHandler.js";
 
 // * The express app
 const app = express();
@@ -34,6 +35,7 @@ app.get("/", function (req, res) {
 });
 
 // * Global error handler
+app.use(globalErrorHandler);
 
 // * Render.com server auto run after 14 minutes
 cron.schedule("*/14 * * * *", () => {
