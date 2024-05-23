@@ -10,6 +10,9 @@
     "debug": "SET NODE_ENV=dev & nodemon --inspect app.js "
   },
   "type": "module",
+  "engines": {
+    "node": ">=18.18.0 <19.0.0"
+  },
   "author": "Aritra Sen",
   "license": "ISC",
   "dependencies": {
