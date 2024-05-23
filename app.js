@@ -11,6 +11,7 @@ import axios from "axios";
 dotenv.config();
 
 // * Local imports
+import authRoutes from "./src/routes/auth.route.js";
 import globalErrorHandler from "./src/middlewares/globalErrorHandler.js";
 
 // * The express app
@@ -29,6 +30,7 @@ mongoose
   .catch((err) => console.error("DB connection failed", err));
 
 // * All app routes
+app.use("/auth", authRoutes);
 
 app.get("/", function (req, res) {
   res.send("Hello World");
