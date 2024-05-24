@@ -8,18 +8,4 @@ const router = express.Router();
 
 const userController = new UserController();
 
-router.post(
-  "/register",
-  [
-    body("email").notEmpty().isEmail(),
-    body("password")
-      .notEmpty()
-      .isStrongPassword()
-      .withMessage("Password is too weak. Please use a strong password!"),
-    body("isAdmin").isBoolean(),
-  ],
-  validateErrorHandler,
-  userController.register
-);
-
 export default router;

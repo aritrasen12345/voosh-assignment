@@ -18,4 +18,22 @@ router.post(
 
 router.get("/signout", checkAuth, validateErrorHandler, authController.signOut);
 
+router.post(
+  "/register",
+  [
+    body("email").notEmpty().isEmail(),
+    body("password")
+      .notEmpty()
+      .isStrongPassword()
+      .withMessage("Password is too weak. Please use a strong password!"),
+    body("isAdmin").isBoolean(),
+    body("name").isString().notEmpty(),
+    body("photo").isString(),
+    body("bio").isString(),
+    body("phone").isNumeric().isLength(10),
+  ],
+  validateErrorHandler,
+  authController.register
+);
+
 export default router;

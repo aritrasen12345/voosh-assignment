@@ -1,4 +1,5 @@
 import AuthService from "../../services/auth.service.js";
+import ProfileService from "../../services/profile.service.js";
 
 class AuthController {
   constructor() {}
@@ -36,6 +37,32 @@ class AuthController {
       });
     } catch (error) {
       next(error);
+    }
+  }
+
+  // * Register
+  async register(req, res, next) {
+    try {
+      // * Create a new User
+      const createdUser = await AuthService.register(req.body);
+
+      const userId = createdUser._id;
+
+      const createdProfile = await ProfileService.createProfile(
+        req.body,
+        userId
+      );
+
+      res.status(201).json({
+        status: "success",
+        message: "User created successfully!",
+        data: {
+          createdUser,
+          createdProfile,
+        },
+      });
+    } catch (err) {
+      next(err);
     }
   }
 }

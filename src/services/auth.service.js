@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
-import userModel from "../models/user.model.js";
+import UserModel from "../models/user.model.js";
 import AuthHelper from "../helpers/auth.helper.js";
 
 class AuthService {
@@ -51,7 +52,7 @@ class AuthService {
   async signOut(userId) {
     return new Promise(async (resolve, reject) => {
       try {
-        const loggedOutUser = await userModel.findByIdAndUpdate(
+        const loggedOutUser = await UserModel.findByIdAndUpdate(
           userId,
           {
             token: null,
@@ -68,6 +69,70 @@ class AuthService {
         resolve();
       } catch (err) {
         reject(err);
+      }
+    });
+  }
+
+  async register(payload) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { email, password, isAdmin } = payload;
+
+        const existedUser = await UserModel.findOne({ email }).exec();
+
+        if (existedUser) {
+          throw new Error(`This ${email} is already registered!`, {
+            cause: { indicator: "db", status: 404 },
+          });
+        }
+
+        const hash = await bcrypt.hash(password, +process.env.SALT);
+
+        const newUser = new UserModel({
+          password: hash,
+          email,
+          isAdmin,
+        });
+
+        const createdUser = await newUser.save();
+
+        if (createdUser) {
+          const token = jwt.sign(
+            {
+              id: createdUser._id,
+              isAdmin,
+            },
+            process.env.ACCESS_TOKEN_SECRET_KEY,
+            { expiresIn: "1d" }
+          );
+
+          createdUser.token = token;
+          const setUserToken = await createdUser.save();
+
+          if (!setUserToken) {
+            throw new Error(
+              new Error(`Unable to add token!`, {
+                cause: {
+                  indicator: "db",
+                  status: 500,
+                },
+              })
+            );
+          }
+
+          resolve(createdUser._doc);
+        } else {
+          reject(
+            new Error(`Unable to create user. Something went wrong!`, {
+              cause: {
+                indicator: "db",
+                status: 500,
+              },
+            })
+          );
+        }
+      } catch (error) {
+        reject(error);
       }
     });
   }

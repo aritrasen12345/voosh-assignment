@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-const userSchema = new Schema(
+const profileSchema = new Schema(
   {
     name: {
       type: Schema.Types.String,
@@ -34,4 +34,4 @@ const userSchema = new Schema(
   }
 );
 
-export default mongoose.model("user", userSchema);
+export default mongoose.model("profile", profileSchema);
