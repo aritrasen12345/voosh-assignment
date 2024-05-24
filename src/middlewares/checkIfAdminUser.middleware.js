@@ -1,13 +1,11 @@
-import ProfileModel from "../models/profile.model.js";
+import UserModel from "../models/user.model.js";
 
-const checkIfPublicUser = async (req, res, next) => {
+const checkIfAdminUser = async (req, res, next) => {
   try {
     // * Check for userId in the req obj
     const { userId } = req.body;
 
-    const userProfile = await ProfileModel.findOne({
-      userId,
-    });
+    const userProfile = await UserModel.findById(userId);
 
     // * Error while finding the user's profile
     if (!userProfile) {
@@ -16,7 +14,7 @@ const checkIfPublicUser = async (req, res, next) => {
       });
     }
 
-    req.body.isPublicUser = userProfile.isPublic;
+    req.body.isAdmin = userProfile.isAdmin;
 
     next();
   } catch (err) {
@@ -32,4 +30,4 @@ const checkIfPublicUser = async (req, res, next) => {
   }
 };
 
-export default checkIfPublicUser;
+export default checkIfAdminUser;

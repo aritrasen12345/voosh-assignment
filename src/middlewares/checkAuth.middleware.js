@@ -28,9 +28,8 @@ const checkAuth = (req, _, next) => {
     }
 
     // * Attaching the decrypted userId to the req.body
-    const { id, isAdmin } = decoded;
+    const { id } = decoded;
     req.body.userId = id;
-    req.body.isAdmin = isAdmin;
 
     next();
   } catch (err) {

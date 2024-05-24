@@ -6,7 +6,7 @@ class AuthHelper {
       try {
         // * Generating the access token
         const token = await jwt.sign(
-          { id: user._id, isAdmin: user.isAdmin },
+          { id: user._id },
           process.env.ACCESS_TOKEN_SECRET_KEY,
           {
             /**

@@ -40,13 +40,13 @@ class ProfileService {
     });
   }
 
-  async getAllProfileDetails(isPublicUser) {
+  async getAllProfileDetails(isAdmin) {
     return new Promise(async (resolve, reject) => {
       try {
         // * If Public profile show him all Public profiles
         // * If Private Profile show him all Profiles
         const profileDetails = await ProfileModel.find(
-          isPublicUser ? { isPublic: true } : {}
+          !isAdmin ? { isPublic: true } : {}
         ).exec();
 
         if (!profileDetails) {

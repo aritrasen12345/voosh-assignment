@@ -8,11 +8,9 @@ class ProfileController {
   // * Get all profile details
   async getAllProfileDetails(req, res, next) {
     try {
-      const { isPublicUser } = req.body;
+      const { isAdmin } = req.body;
 
-      const profileDetails = await profileService.getAllProfileDetails(
-        isPublicUser
-      );
+      const profileDetails = await profileService.getAllProfileDetails(isAdmin);
 
       res.status(200).json({
         status: "success",

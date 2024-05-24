@@ -3,7 +3,7 @@ import { body } from "express-validator";
 
 import ProfileController from "../controllers/profile/profile.controller.js";
 import validateErrorHandler from "../middlewares/validateErrorHandler.middleware.js";
-import checkIfPublicUser from "../middlewares/checkIfPublicUser.middleware.js";
+import checkIfAdminUser from "../middlewares/checkIfAdminUser.middleware.js";
 import checkAuth from "../middlewares/checkAuth.middleware.js";
 
 const router = express.Router();
@@ -14,7 +14,7 @@ const profileController = new ProfileController();
 router.get(
   "/all",
   checkAuth,
-  checkIfPublicUser,
+  checkIfAdminUser,
   validateErrorHandler,
   profileController.getAllProfileDetails
 );
