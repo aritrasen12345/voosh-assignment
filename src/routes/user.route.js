@@ -1,11 +1,11 @@
 import express from "express";
 import { body } from "express-validator";
 
-import validateErrorHandler from "../middlewares/validationErrorHandler.middleware.js";
-import UserController from "../controllers/user/user.controller.js";
+import validateErrorHandler from "../middlewares/validateErrorHandler.middleware.js";
+// import UserController from "../controllers/user/user.controller.js";
 
-const router = express.Router();
+// const router = express.Router();
 
-const userController = new UserController();
+// const userController = new UserController();
 
-export default router;
+// export default router;

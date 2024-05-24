@@ -5,7 +5,7 @@ import { validationResult } from "express-validator";
  * If there is any validation error this middleware handle that otherwise proceed normally
  */
 
-const validationErrorHandler = (req, res, next) => {
+const validateErrorHandler = (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -28,4 +28,4 @@ const validationErrorHandler = (req, res, next) => {
   }
 };
 
-export default validationErrorHandler;
+export default validateErrorHandler;

@@ -16,12 +16,13 @@ const profileSchema = new Schema(
       required: true,
     },
     phone: {
-      type: Schema.Types.Boolean,
+      type: Schema.Types.String,
       default: false,
     },
     userId: {
-      type: Schema.Types.String,
+      type: Schema.Types.ObjectId,
       required: true,
+      ref: "User",
     },
     isPublic: {
       type: Boolean,
