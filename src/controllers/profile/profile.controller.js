@@ -77,6 +77,8 @@ class ProfileController {
     try {
       const { userId } = req.body;
 
+      console.log("req.file", req.file);
+
       const updatedProfilePic = await profileService.uploadProfilePic(
         userId,
         req.file.filename,

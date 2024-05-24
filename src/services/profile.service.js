@@ -161,9 +161,13 @@ class ProfileService {
             userProfile.photo !== "default.jpg" &&
             !userProfile.photo.startsWith("http")
           ) {
-            fs.unlink(
-              path.join(__dirname, "uploads", userProfile.photo),
-              (err) => {
+            const oldPhotoPath = path.join(
+              __dirname,
+              "uploads",
+              userProfile.photo
+            );
+            if (fs.existsSync(oldPhotoPath)) {
+              fs.unlink(oldPhotoPath, (err) => {
                 if (err) {
                   throw new Error(
                     `Error while deleting profile pic from local!`,
@@ -176,8 +180,8 @@ class ProfileService {
                     }
                   );
                 }
-              }
-            );
+              });
+            }
           }
 
           // Update user photo with the new file's filename
@@ -190,9 +194,13 @@ class ProfileService {
             userProfile.photo !== "default.jpg" &&
             !userProfile.photo.startsWith("http")
           ) {
-            fs.unlink(
-              path.join(__dirname, "uploads", userProfile.photo),
-              (err) => {
+            const oldPhotoPath = path.join(
+              __dirname,
+              "uploads",
+              userProfile.photo
+            );
+            if (fs.existsSync) {
+              fs.unlink(oldPhotoPath, (err) => {
                 if (err) {
                   throw new Error(`Error while deleting profile pic!`, {
                     cause: {
@@ -201,8 +209,8 @@ class ProfileService {
                     },
                   });
                 }
-              }
-            );
+              });
+            }
           }
           userProfile.photo = payloadPhotoUrl;
         }
