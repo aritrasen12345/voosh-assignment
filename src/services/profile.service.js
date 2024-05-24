@@ -1,4 +1,7 @@
 import ProfileModel from "../models/profile.model.js";
+import fs from "fs";
+import path from "path";
+const __dirname = path.resolve();
 
 class ProfileService {
   constructor() {}
@@ -130,6 +133,91 @@ class ProfileService {
         }
 
         resolve(modifiedUserProfile);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  async uploadProfilePic(userId, uploadFileFilename, payloadPhotoUrl) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const userProfile = await ProfileModel.findOne({ userId }).exec();
+
+        if (!userProfile) {
+          throw new Error(`Error while fetching user profile details!`, {
+            cause: {
+              indicator: "db",
+              status: 500,
+            },
+          });
+        }
+
+        // Check if a new photo file is uploaded
+        if (uploadFileFilename) {
+          // Delete the old photo file if it exists and isn't the default
+          if (
+            userProfile.photo &&
+            userProfile.photo !== "default.jpg" &&
+            !userProfile.photo.startsWith("http")
+          ) {
+            fs.unlink(
+              path.join(__dirname, "uploads", userProfile.photo),
+              (err) => {
+                if (err) {
+                  throw new Error(
+                    `Error while deleting profile pic from local!`,
+                    {
+                      cause: {
+                        indicator: "multer",
+                        status: 500,
+                        details: err.message,
+                      },
+                    }
+                  );
+                }
+              }
+            );
+          }
+
+          // Update user photo with the new file's filename
+          userProfile.photo = uploadFileFilename;
+        } else if (payloadPhotoUrl) {
+          // Update user photo with the provided URL
+          // Delete the old photo file if it exists and isn't the default
+          if (
+            userProfile.photo &&
+            userProfile.photo !== "default.jpg" &&
+            !userProfile.photo.startsWith("http")
+          ) {
+            fs.unlink(
+              path.join(__dirname, "uploads", userProfile.photo),
+              (err) => {
+                if (err) {
+                  throw new Error(`Error while deleting profile pic!`, {
+                    cause: {
+                      indicator: "multer",
+                      status: 500,
+                    },
+                  });
+                }
+              }
+            );
+          }
+          userProfile.photo = payloadPhotoUrl;
+        }
+
+        const modifiedUserProfile = await userProfile.save();
+
+        if (!userProfile) {
+          throw new Error(`Error while saving user profile pic details!`, {
+            cause: {
+              indicator: "db",
+              status: 500,
+            },
+          });
+        }
+        resolve(modifiedUserProfile._doc);
       } catch (err) {
         reject(err);
       }

@@ -8,6 +8,7 @@ import helmet from "helmet";
 import cron from "node-cron";
 import axios from "axios";
 
+// * Configure Env
 dotenv.config();
 
 // * Local imports
@@ -19,11 +20,14 @@ import globalErrorHandler from "./src/middlewares/globalErrorHandler.middleware.
 // * The express app
 const app = express();
 
+// * Middlewares
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors());
 app.use(helmet());
 app.use(express.static("public"));
+app.use(express.urlencoded({ extended: false }));
+app.use("/uploads", express.static("uploads"));
 
 // * connecting to the DB
 mongoose

@@ -9,7 +9,7 @@ const profileSchema = new Schema(
     },
     photo: {
       type: Schema.Types.String,
-      required: true,
+      default: "default.jpg",
     },
     bio: {
       type: Schema.Types.String,

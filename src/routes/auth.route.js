@@ -28,7 +28,7 @@ router.post(
       .withMessage("Password is too weak. Please use a strong password!"),
     body("isAdmin").isBoolean(),
     body("name").isString().notEmpty(),
-    body("photo").isString(),
+    body("photo").optional().isString(),
     body("bio").isString(),
     body("phone").isNumeric().isLength(10),
   ],

@@ -1,11 +1,24 @@
 import express from "express";
 import { body } from "express-validator";
+import multer from "multer";
+import path from "path";
 
 import ProfileController from "../controllers/profile/profile.controller.js";
 import validateErrorHandler from "../middlewares/validateErrorHandler.middleware.js";
 import checkIfAdminUser from "../middlewares/checkIfAdminUser.middleware.js";
 import checkAuth from "../middlewares/checkAuth.middleware.js";
 
+// * Setup multer
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({ storage: storage });
 const router = express.Router();
 
 const profileController = new ProfileController();
@@ -50,6 +63,14 @@ router.put(
   checkAuth,
   validateErrorHandler,
   profileController.updateProfile
+);
+
+router.put(
+  "/photo",
+  upload.single("photo"),
+  checkAuth,
+  validateErrorHandler,
+  profileController.uploadProfilePic
 );
 
 export default router;

@@ -71,6 +71,27 @@ class ProfileController {
       next(err);
     }
   }
+
+  // * Upload Profile Pic
+  async uploadProfilePic(req, res, next) {
+    try {
+      const { userId } = req.body;
+
+      const updatedProfilePic = await profileService.uploadProfilePic(
+        userId,
+        req.file.filename,
+        req.body.photo
+      );
+
+      res.status(200).json({
+        status: "success",
+        message: "Successfully uploaded user profile pic!",
+        data: updatedProfilePic,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 export default ProfileController;
