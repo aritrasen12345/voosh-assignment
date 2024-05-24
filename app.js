@@ -7,6 +7,8 @@ import cors from "cors";
 import helmet from "helmet";
 import cron from "node-cron";
 import axios from "axios";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
 
 // * Configure Env
 dotenv.config();
@@ -19,6 +21,30 @@ import globalErrorHandler from "./src/middlewares/globalErrorHandler.middleware.
 
 // * The express app
 const app = express();
+
+// * provide swagger-options
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Voosh Backend Assignment",
+      version: "1.0.0",
+    },
+    servers: [
+      {
+        url: "http://localhost:8000/",
+      },
+    ],
+  },
+  apis: [
+    "./src/routes/auth.route.js",
+    "./src/routes/profile.route.js",
+    "./src/routes/user.route.js",
+  ],
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // * Middlewares
 app.use(express.json());
