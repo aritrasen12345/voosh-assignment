@@ -15,7 +15,7 @@ const userSchema = new Schema(
       type: Schema.Types.Boolean,
       default: false,
     },
-    verifyToken: {
+    token: {
       type: String,
     },
   },

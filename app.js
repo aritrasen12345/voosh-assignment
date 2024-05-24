@@ -12,6 +12,7 @@ dotenv.config();
 
 // * Local imports
 import authRoutes from "./src/routes/auth.route.js";
+import userRoutes from "./src/routes/user.route.js";
 import globalErrorHandler from "./src/middlewares/globalErrorHandler.middleware.js";
 
 // * The express app
@@ -31,6 +32,7 @@ mongoose
 
 // * All app routes
 app.use("/auth", authRoutes);
+app.use("/user", userRoutes);
 
 app.get("/", function (req, res) {
   res.send("Hello World");

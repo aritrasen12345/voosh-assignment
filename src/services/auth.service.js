@@ -6,7 +6,7 @@ import AuthHelper from "../helpers/auth.helper.js";
 class AuthService {
   constructor() {}
 
-  async login(email, password) {
+  async login(email, password, isAdmin) {
     return new Promise(async (resolve, reject) => {
       try {
         const existingUser = await userModel.findOne({
@@ -38,7 +38,7 @@ class AuthService {
           );
         }
 
-        const token = await AuthHelper.generateToken(existingUser._id, isAdmin);
+        const token = await AuthHelper.generateToken(existingUser);
 
         // * If everything was successful
         resolve({ token });

@@ -23,7 +23,6 @@ class AuthController {
   }
 
   // * SignOut API
-
   async signOut(req, res, next) {
     try {
       const { userId } = req.body;
@@ -39,7 +38,6 @@ class AuthController {
       next(error);
     }
   }
-  // * Register User
 }
 
 export default AuthController;
