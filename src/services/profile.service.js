@@ -106,6 +106,35 @@ class ProfileService {
       }
     });
   }
+
+  async updateProfile(payload) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { photo, name, bio, phone, userId } = payload;
+        const profileUpdatedProperties = {};
+        if (photo) profileUpdatedProperties.photo = photo;
+        if (name) profileUpdatedProperties.name = name;
+        if (bio) profileUpdatedProperties.bio = bio;
+        if (phone) profileUpdatedProperties.phone = phone;
+
+        const modifiedUserProfile = await ProfileModel.findOneAndUpdate(
+          { userId },
+          profileUpdatedProperties,
+          { new: true }
+        );
+
+        if (!modifiedUserProfile) {
+          throw new Error(`Error while updating user profile details!`, {
+            cause: { indicator: "db", status: 500 },
+          });
+        }
+
+        resolve(modifiedUserProfile);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 }
 
 export default new ProfileService();

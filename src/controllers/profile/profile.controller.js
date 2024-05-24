@@ -1,6 +1,5 @@
-import profileModel from "../../models/profile.model.js";
-import ProfileModel from "../../models/profile.model.js";
 import profileService from "../../services/profile.service.js";
+import userService from "../../services/user.service.js";
 
 class ProfileController {
   constructor() {}
@@ -52,6 +51,23 @@ class ProfileController {
         data: toggleProfileView,
       });
     } catch (error) {
+      next(err);
+    }
+  }
+
+  // * Update Profile
+  async updateProfile(req, res, next) {
+    try {
+      const modifiedUser = await userService.updateUser(req.body);
+
+      const modifiedUserProfile = await profileService.updateProfile(req.body);
+
+      res.status(200).json({
+        status: "success",
+        message: "Successfully updated user profile!",
+        data: { ...modifiedUser._doc, ...modifiedUserProfile._doc },
+      });
+    } catch (err) {
       next(err);
     }
   }

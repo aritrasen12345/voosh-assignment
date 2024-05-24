@@ -10,7 +10,7 @@ class AuthService {
   async login(email, password, isAdmin) {
     return new Promise(async (resolve, reject) => {
       try {
-        const existingUser = await userModel.findOne({
+        const existingUser = await UserModel.findOne({
           email,
         });
 
@@ -86,7 +86,7 @@ class AuthService {
           });
         }
 
-        const hash = await bcrypt.hash(password, +process.env.SALT);
+        const hash = await this.hashPassword(password);
 
         const newUser = new UserModel({
           password: hash,
@@ -100,7 +100,6 @@ class AuthService {
           const token = jwt.sign(
             {
               id: createdUser._id,
-              isAdmin,
             },
             process.env.ACCESS_TOKEN_SECRET_KEY,
             { expiresIn: "1d" }
@@ -133,6 +132,18 @@ class AuthService {
         }
       } catch (error) {
         reject(error);
+      }
+    });
+  }
+
+  async hashPassword(password) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const hash = await bcrypt.hash(password, +process.env.SALT);
+
+        resolve(hash);
+      } catch (err) {
+        reject(err);
       }
     });
   }

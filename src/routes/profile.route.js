@@ -33,4 +33,23 @@ router.get(
   profileController.toggleProfileView
 );
 
+router.put(
+  "/",
+  [
+    body("photo").optional().notEmpty().isString(),
+    body("name").optional().notEmpty(),
+    body("bio").optional().isString(),
+    body("phone").optional().isNumeric().isLength(10),
+    body("email").optional().notEmpty().isEmail(),
+    body("password")
+      .optional()
+      .notEmpty()
+      .isStrongPassword()
+      .withMessage("Password is too weak. Please use a strong password!"),
+  ],
+  checkAuth,
+  validateErrorHandler,
+  profileController.updateProfile
+);
+
 export default router;
