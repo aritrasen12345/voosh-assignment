@@ -12,11 +12,25 @@ const profileController = new ProfileController();
 
 // * GET Profile Details
 router.get(
-  "/",
+  "/all",
   checkAuth,
   checkIfPublicUser,
   validateErrorHandler,
-  profileController.getDetails
+  profileController.getAllProfileDetails
+);
+
+router.get(
+  "/",
+  checkAuth,
+  validateErrorHandler,
+  profileController.getProfileDetails
+);
+
+router.get(
+  "/toggle",
+  checkAuth,
+  validateErrorHandler,
+  profileController.toggleProfileView
 );
 
 export default router;

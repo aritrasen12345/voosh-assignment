@@ -25,17 +25,82 @@ class ProfileService {
         const createdProfile = await newProfile.save();
 
         if (!createdProfile) {
-          throw new Error(
-            new Error(`Unable to create profile. Something went wrong!`, {
-              cause: {
-                indicator: "db",
-                status: 500,
-              },
-            })
-          );
+          throw new Error(`Unable to create profile. Something went wrong!`, {
+            cause: {
+              indicator: "db",
+              status: 500,
+            },
+          });
         }
 
         resolve(createdProfile._doc);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  async getAllProfileDetails(isPublicUser) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        // * If Public profile show him all Public profiles
+        // * If Private Profile show him all Profiles
+        const profileDetails = await ProfileModel.find(
+          isPublicUser ? { isPublic: true } : {}
+        ).exec();
+
+        if (!profileDetails) {
+          throw new Error(`Error while fetching details!`, {
+            cause: { indicator: "db", status: 500 },
+          });
+        }
+
+        resolve(profileDetails);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  async getProfileDetails(userId) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const userDetails = await ProfileModel.findOne({ userId }).exec();
+
+        if (!userDetails) {
+          throw new Error(`Error while fetching details!`, {
+            cause: { indicator: "db", status: 500 },
+          });
+        }
+
+        resolve(userDetails);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  async toggleProfileView(userId) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const userDetails = await ProfileModel.findOne({ userId }).exec();
+
+        if (!userDetails) {
+          throw new Error(`Error while fetching details!`);
+        }
+
+        const userCurrentProfileView = userDetails.isPublic;
+        userDetails.isPublic = !userCurrentProfileView;
+
+        const modifiedUser = await userDetails.save();
+
+        if (!modifiedUser) {
+          throw new Error(`Error while modifying user details!`, {
+            cause: { indicator: "db", status: 500 },
+          });
+        }
+
+        resolve(modifiedUser);
       } catch (err) {
         reject(err);
       }
