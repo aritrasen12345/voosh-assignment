@@ -9,6 +9,7 @@ const router = express.Router();
 
 const authController = new AuthController();
 
+// * API For User Login
 router.post(
   "/login",
   [body("email").notEmpty().isEmail(), body("password").notEmpty()],
@@ -16,8 +17,10 @@ router.post(
   authController.login
 );
 
+// * API For User signout
 router.get("/signout", checkAuth, validateErrorHandler, authController.signOut);
 
+// * API For User registration
 router.post(
   "/register",
   [

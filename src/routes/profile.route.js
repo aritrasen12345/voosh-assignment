@@ -23,7 +23,7 @@ const router = express.Router();
 
 const profileController = new ProfileController();
 
-// * GET Profile Details
+// * GET All Profile Details API
 router.get(
   "/all",
   checkAuth,
@@ -32,6 +32,7 @@ router.get(
   profileController.getAllProfileDetails
 );
 
+// * GET Profile Details API
 router.get(
   "/",
   checkAuth,
@@ -39,6 +40,7 @@ router.get(
   profileController.getProfileDetails
 );
 
+// * Toggle Profile View API
 router.get(
   "/toggle",
   checkAuth,
@@ -46,6 +48,7 @@ router.get(
   profileController.toggleProfileView
 );
 
+// * Update Profile API
 router.put(
   "/",
   [
@@ -65,6 +68,7 @@ router.put(
   profileController.updateProfile
 );
 
+// * Upload Profile Pic API
 router.put(
   "/photo",
   upload.single("photo"),

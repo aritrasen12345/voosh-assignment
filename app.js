@@ -15,7 +15,6 @@ dotenv.config();
 
 // * Local imports
 import authRoutes from "./src/routes/auth.route.js";
-// import userRoutes from "./src/routes/user.route.js";
 import profileRoutes from "./src/routes/profile.route.js";
 import globalErrorHandler from "./src/middlewares/globalErrorHandler.middleware.js";
 
@@ -36,11 +35,7 @@ const options = {
       },
     ],
   },
-  apis: [
-    "./src/routes/auth.route.js",
-    "./src/routes/profile.route.js",
-    "./src/routes/user.route.js",
-  ],
+  apis: ["./src/routes/auth.route.js", "./src/routes/profile.route.js"],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
@@ -63,7 +58,6 @@ mongoose
 
 // * All app routes
 app.use("/auth", authRoutes);
-// app.use("/user", userRoutes);
 app.use("/profile", profileRoutes);
 
 app.get("/", function (req, res) {
@@ -85,6 +79,8 @@ cron.schedule("*/14 * * * *", () => {
     });
 });
 
+// * Port Defined
 const PORT = process.env.PORT;
 
+// * Server Started
 app.listen(PORT, () => console.log(`Server started on PORT ${PORT}`));

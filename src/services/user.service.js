@@ -7,12 +7,14 @@ class UserService {
     return new Promise(async (resolve, reject) => {
       try {
         const { userId, email, password } = payload;
+
         const updatedProperties = {};
         if (email) updatedProperties.email = email;
         if (password) {
           const hashedPassword = await authService.hashPassword(password);
           updatedProperties.password = hashedPassword;
         }
+
         const updatedUser = await UserProfile.findByIdAndUpdate(
           userId,
           updatedProperties,
